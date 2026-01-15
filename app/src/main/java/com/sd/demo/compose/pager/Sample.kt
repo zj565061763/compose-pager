@@ -35,7 +35,7 @@ import com.sd.lib.compose.pager.LoopToPrevious
 import com.sd.lib.compose.pager.realPageOf
 import com.sd.lib.compose.pager.rememberInfinitePagerState
 
-class SampleActivity : ComponentActivity() {
+class Sample : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
