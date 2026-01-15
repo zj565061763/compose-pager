@@ -1,7 +1,5 @@
 package com.sd.lib.compose.pager
 
-import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -61,31 +59,5 @@ private fun Loop(
         loopUpdated()
       }
     }
-  }
-}
-
-/** 滚动到下一项 */
-suspend fun InfinitePagerState.animateScrollToPageNext(
-  animationSpec: AnimationSpec<Float> = tween(500),
-) {
-  if (realPageCount <= 1) return
-  val page = currentPage + 1
-  if (page < pageCount) {
-    animateScrollToPage(page, animationSpec = animationSpec)
-  } else {
-    scrollToPage(CENTER_PAGE)
-  }
-}
-
-/** 滚动到上一项 */
-suspend fun InfinitePagerState.animateScrollToPagePrevious(
-  animationSpec: AnimationSpec<Float> = tween(500),
-) {
-  if (realPageCount <= 1) return
-  val page = currentPage - 1
-  if (page >= 0) {
-    animateScrollToPage(page, animationSpec = animationSpec)
-  } else {
-    scrollToPage(CENTER_PAGE)
   }
 }
