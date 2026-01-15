@@ -97,33 +97,22 @@ class InfinitePagerState internal constructor(
   }
 
   /** 滚动到下一项 */
-  suspend fun animateScrollToPageNext(
-    animationSpec: AnimationSpec<Float> = tween(500),
-  ) {
-    if (realPageCount <= 1) return
-    val page = currentPage + 1
-    if (page < pageCount) {
-      if (page != targetPage) {
-        animateScrollToPage(page, animationSpec = animationSpec)
-      }
-    } else {
-      scrollToPage(CENTER_PAGE)
-    }
+  suspend fun animateScrollToPageNext(animationSpec: AnimationSpec<Float> = tween(500)) {
+    animateScrollToPageDelta(delta = 1, animationSpec)
   }
 
   /** 滚动到上一项 */
-  suspend fun animateScrollToPagePrevious(
-    animationSpec: AnimationSpec<Float> = tween(500),
-  ) {
+  suspend fun animateScrollToPagePrevious(animationSpec: AnimationSpec<Float> = tween(500)) {
+    animateScrollToPageDelta(delta = -1, animationSpec)
+  }
+
+  private suspend fun animateScrollToPageDelta(delta: Int, animationSpec: AnimationSpec<Float>) {
     if (realPageCount <= 1) return
 
-    val page = currentPage - 1
-    if (page < 0) {
-      scrollToPage(CENTER_PAGE)
-      return
-    }
+    val page = currentPage + delta
+    if (page == targetPage) return
 
-    if (page != targetPage) {
+    if (page in 0..<pageCount) {
       animateScrollToPage(page, animationSpec = animationSpec)
     }
   }
