@@ -28,13 +28,12 @@ fun AppPagerView(
     Box(
       modifier = Modifier
         .fillMaxSize()
-        .background(if (page % 2 == 0) Color.Red else Color.Blue),
+        .background(Color.Gray),
       contentAlignment = Alignment.Center,
     ) {
       Text(
         text = page.toString(),
         fontSize = 24.sp,
-        color = Color.White,
       )
     }
   }

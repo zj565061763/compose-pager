@@ -57,8 +57,8 @@ private fun LoopView(
   modifier: Modifier = Modifier,
   pagerState: InfinitePagerState,
 ) {
-  val list = remember { listOf(-1, 0, 1) }
-  var loop by remember { mutableStateOf(0) }
+  val list = remember { listOf("<", "x", ">") }
+  var loop by remember { mutableStateOf("x") }
   Row(
     modifier = modifier,
     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -66,18 +66,14 @@ private fun LoopView(
     for (item in list) {
       Button(onClick = { loop = item }) {
         Text(
-          text = when (item) {
-            1 -> ">"
-            -1 -> "<"
-            else -> "x"
-          },
+          text = item,
           color = if (item == loop) Color.Red else Color.Unspecified,
         )
       }
     }
   }
   when (loop) {
-    1 -> pagerState.LoopToNext()
-    -1 -> pagerState.LoopToPrevious()
+    ">" -> pagerState.LoopToNext(getInterval = { 1000 })
+    "<" -> pagerState.LoopToPrevious(getInterval = { 1000 })
   }
 }
