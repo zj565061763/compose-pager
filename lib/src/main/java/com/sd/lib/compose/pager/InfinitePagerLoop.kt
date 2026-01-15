@@ -40,7 +40,7 @@ fun InfinitePagerState.LoopToPrevious(
 @Composable
 private fun Loop(
   state: InfinitePagerState,
-  getInterval: () -> Long = { 3000L },
+  getInterval: () -> Long,
   loop: suspend () -> Unit,
 ) {
   if (state.realPageCount <= 1) return
