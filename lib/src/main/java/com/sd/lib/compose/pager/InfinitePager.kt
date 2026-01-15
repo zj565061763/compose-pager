@@ -67,6 +67,17 @@ class InfinitePagerState internal constructor(
     _coroutineScope = rememberCoroutineScope()
   }
 
+  /** 把[page]映射为真实的page */
+  fun realPageOf(page: Int): Int {
+    val count = realPageCount
+    return if (count > 1) {
+      val offset = page - CENTER_PAGE
+      ((offset % count) + count) % count
+    } else {
+      0
+    }
+  }
+
   /** 滚动到下一项（异步） */
   fun animateScrollToPageNextAsync(
     animationSpec: AnimationSpec<Float> = tween(500),
@@ -85,52 +96,41 @@ class InfinitePagerState internal constructor(
     }
   }
 
+  /** 滚动到下一项 */
+  suspend fun animateScrollToPageNext(
+    animationSpec: AnimationSpec<Float> = tween(500),
+  ) {
+    if (realPageCount <= 1) return
+    val page = currentPage + 1
+    if (page < pageCount) {
+      if (page != targetPage) {
+        animateScrollToPage(page, animationSpec = animationSpec)
+      }
+    } else {
+      scrollToPage(CENTER_PAGE)
+    }
+  }
+
+  /** 滚动到上一项 */
+  suspend fun animateScrollToPagePrevious(
+    animationSpec: AnimationSpec<Float> = tween(500),
+  ) {
+    if (realPageCount <= 1) return
+    val page = currentPage - 1
+    if (page >= 0) {
+      if (page != targetPage) {
+        animateScrollToPage(page, animationSpec = animationSpec)
+      }
+    } else {
+      scrollToPage(CENTER_PAGE)
+    }
+  }
+
   companion object {
     internal val Saver: Saver<InfinitePagerState, *> = listSaver(
       save = { listOf(it.realPageCount, it.currentPage) },
       restore = { InfinitePagerState(pageCount = it[0], currentPage = it[1]) }
     )
-  }
-}
-
-/** 把[page]映射为真实的page */
-fun InfinitePagerState.realPageOf(page: Int): Int {
-  val count = realPageCount
-  return if (count > 1) {
-    val offset = page - CENTER_PAGE
-    ((offset % count) + count) % count
-  } else {
-    0
-  }
-}
-
-/** 滚动到下一项 */
-suspend fun InfinitePagerState.animateScrollToPageNext(
-  animationSpec: AnimationSpec<Float> = tween(500),
-) {
-  if (realPageCount <= 1) return
-  val page = currentPage + 1
-  if (page < pageCount) {
-    if (page != targetPage) {
-      animateScrollToPage(page, animationSpec = animationSpec)
-    }
-  } else {
-    scrollToPage(CENTER_PAGE)
-  }
-}
-
-/** 滚动到上一项 */
-suspend fun InfinitePagerState.animateScrollToPagePrevious(
-  animationSpec: AnimationSpec<Float> = tween(500),
-) {
-  if (realPageCount <= 1) return
-  val page = currentPage - 1
-  if (page >= 0) {
-    if (page != targetPage) {
-      animateScrollToPage(page, animationSpec = animationSpec)
-    }
-  } else {
-    scrollToPage(CENTER_PAGE)
   }
 }
 

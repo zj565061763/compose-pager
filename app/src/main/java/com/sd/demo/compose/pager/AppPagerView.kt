@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import com.sd.lib.compose.pager.InfinitePagerState
-import com.sd.lib.compose.pager.realPageOf
 
 @Composable
 fun AppPagerView(
