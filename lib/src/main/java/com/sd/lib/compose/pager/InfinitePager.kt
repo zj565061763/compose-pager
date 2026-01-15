@@ -116,13 +116,15 @@ class InfinitePagerState internal constructor(
     animationSpec: AnimationSpec<Float> = tween(500),
   ) {
     if (realPageCount <= 1) return
+
     val page = currentPage - 1
-    if (page >= 0) {
-      if (page != targetPage) {
-        animateScrollToPage(page, animationSpec = animationSpec)
-      }
-    } else {
+    if (page < 0) {
       scrollToPage(CENTER_PAGE)
+      return
+    }
+
+    if (page != targetPage) {
+      animateScrollToPage(page, animationSpec = animationSpec)
     }
   }
 
