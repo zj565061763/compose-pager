@@ -58,7 +58,7 @@ class InfinitePagerState internal constructor(
     get() = realPageOf(settledPage)
 
   override val pageCount: Int
-    get() = realPageCount.let { if (it > 1) Int.MAX_VALUE else it }
+    get() = realPageCount.let { if (it > 1) MAX_PAGE_COUNT else it }
 
   private var _coroutineScope: CoroutineScope? = null
 
@@ -134,4 +134,5 @@ class InfinitePagerState internal constructor(
   }
 }
 
+private const val MAX_PAGE_COUNT = Int.MAX_VALUE
 private const val CENTER_PAGE = Int.MAX_VALUE / 2 + 1
