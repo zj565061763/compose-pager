@@ -67,7 +67,7 @@ class InfinitePagerState internal constructor(
     _coroutineScope = rememberCoroutineScope()
   }
 
-  /** 滚动到下一项 */
+  /** 滚动到下一项（异步） */
   fun animateScrollToPageNextAsync(
     animationSpec: AnimationSpec<Float> = tween(500),
   ) {
@@ -76,6 +76,7 @@ class InfinitePagerState internal constructor(
     }
   }
 
+  /** 滚动到上一项（异步） */
   fun animateScrollToPagePreviousAsync(
     animationSpec: AnimationSpec<Float> = tween(500),
   ) {
