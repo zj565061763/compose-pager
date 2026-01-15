@@ -7,12 +7,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,9 +20,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.sd.demo.compose.pager.theme.AppTheme
 import com.sd.lib.compose.pager.InfinitePagerState
+import com.sd.lib.compose.pager.LoopToNext
+import com.sd.lib.compose.pager.LoopToPrevious
 import com.sd.lib.compose.pager.rememberInfinitePagerState
 
-class Sample : ComponentActivity() {
+class SampleLoop : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
@@ -41,14 +39,12 @@ class Sample : ComponentActivity() {
 private fun Content(
   modifier: Modifier = Modifier,
 ) {
-  var pageCount by remember { mutableStateOf(0) }
-  val pagerState = rememberInfinitePagerState(pageCount)
+  val pagerState = rememberInfinitePagerState(3)
   Column(
     modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    CountRow(pageCount = pageCount) { pageCount = it }
-    ScrollView(pagerState = pagerState)
+    LoopView(pagerState = pagerState)
     AppPagerView(
       modifier = Modifier.weight(1f),
       pagerState = pagerState,
@@ -57,40 +53,31 @@ private fun Content(
 }
 
 @Composable
-private fun CountRow(
-  modifier: Modifier = Modifier,
-  pageCount: Int,
-  onClickCount: (Int) -> Unit,
-) {
-  LazyRow(modifier = modifier) {
-    items(10) { index ->
-      val selected = index == pageCount
-      TextButton(
-        onClick = { onClickCount(index) },
-        colors = ButtonDefaults.textButtonColors(
-          contentColor = if (selected) Color.Red else MaterialTheme.colorScheme.primary
-        ),
-      ) {
-        Text(text = index.toString())
-      }
-    }
-  }
-}
-
-@Composable
-private fun ScrollView(
+private fun LoopView(
   modifier: Modifier = Modifier,
   pagerState: InfinitePagerState,
 ) {
+  val list = remember { listOf(-1, 0, 1) }
+  var loop by remember { mutableStateOf(0) }
   Row(
     modifier = modifier,
     horizontalArrangement = Arrangement.spacedBy(8.dp),
   ) {
-    Button(onClick = { pagerState.animateScrollToPagePreviousAsync() }) {
-      Text(text = "<")
+    for (item in list) {
+      Button(onClick = { loop = item }) {
+        Text(
+          text = when (item) {
+            1 -> ">"
+            -1 -> "<"
+            else -> "x"
+          },
+          color = if (item == loop) Color.Red else Color.Unspecified,
+        )
+      }
     }
-    Button(onClick = { pagerState.animateScrollToPageNextAsync() }) {
-      Text(text = ">")
-    }
+  }
+  when (loop) {
+    1 -> pagerState.LoopToNext()
+    -1 -> pagerState.LoopToPrevious()
   }
 }
