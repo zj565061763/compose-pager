@@ -1,5 +1,7 @@
 package com.sd.lib.compose.pager
 
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,11 +17,12 @@ import kotlinx.coroutines.delay
 fun InfinitePagerState.LoopToNext(
   /** 间隔，默认3000毫秒 */
   getInterval: () -> Long = { 3000L },
+  animationSpec: AnimationSpec<Float> = tween(500),
 ) {
   Loop(
     state = this,
     getInterval = getInterval,
-    loop = { animateScrollToPageNext() },
+    loop = { animateScrollToPageNext(animationSpec) },
   )
 }
 
@@ -28,11 +31,12 @@ fun InfinitePagerState.LoopToNext(
 fun InfinitePagerState.LoopToPrevious(
   /** 间隔，默认3000毫秒 */
   getInterval: () -> Long = { 3000L },
+  animationSpec: AnimationSpec<Float> = tween(500),
 ) {
   Loop(
     state = this,
     getInterval = getInterval,
-    loop = { animateScrollToPagePrevious() },
+    loop = { animateScrollToPagePrevious(animationSpec) },
   )
 }
 
