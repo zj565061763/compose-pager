@@ -1,5 +1,6 @@
 package com.sd.lib.compose.pager
 
+import android.util.Log
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.pager.PagerState
@@ -71,6 +72,7 @@ class InfinitePagerState internal constructor(
       if (pageCount == MAX_PAGE_COUNT && realPageCount < RECENTER_THRESHOLD) {
         val distance = abs(currentPage - CENTER_PAGE)
         if (distance > RECENTER_THRESHOLD) {
+          Log.i("InfinitePager", "RECENTER")
           requestScrollToPage(CENTER_PAGE + realCurrentPage)
         }
       }
@@ -142,4 +144,4 @@ private const val MAX_PAGE_COUNT = Int.MAX_VALUE
 private const val CENTER_PAGE = Int.MAX_VALUE / 2
 
 /** 回中阈值 */
-private const val RECENTER_THRESHOLD = CENTER_PAGE / 2
+private const val RECENTER_THRESHOLD = CENTER_PAGE - 10000
