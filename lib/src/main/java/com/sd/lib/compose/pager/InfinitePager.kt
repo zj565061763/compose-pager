@@ -14,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 /**
  * 当[pageCount]大于1时，无限循环
@@ -65,6 +66,15 @@ class InfinitePagerState internal constructor(
   @Composable
   internal fun Init() {
     _coroutineScope = rememberCoroutineScope()
+    LaunchedEffect(isScrollInProgress) {
+      if (isScrollInProgress) return@LaunchedEffect
+      if (pageCount == MAX_PAGE_COUNT && realPageCount < RECENTER_THRESHOLD) {
+        val distance = abs(currentPage - CENTER_PAGE)
+        if (distance > RECENTER_THRESHOLD) {
+          requestScrollToPage(CENTER_PAGE + realCurrentPage)
+        }
+      }
+    }
   }
 
   /** 把[page]映射为真实的page */
@@ -125,5 +135,11 @@ class InfinitePagerState internal constructor(
   }
 }
 
+/** 最大页数 */
 private const val MAX_PAGE_COUNT = Int.MAX_VALUE
-private const val CENTER_PAGE = Int.MAX_VALUE / 2 + 1
+
+/** 中间页码 */
+private const val CENTER_PAGE = Int.MAX_VALUE / 2
+
+/** 回中阈值 */
+private const val RECENTER_THRESHOLD = CENTER_PAGE / 2
