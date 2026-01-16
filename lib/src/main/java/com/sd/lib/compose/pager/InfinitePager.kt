@@ -130,12 +130,12 @@ class InfinitePagerState internal constructor(
     /** 动画参数 */
     animationSpec: AnimationSpec<Float>,
   ) {
-    if (realPageCount <= 1) return
-
-    val page = currentPage + delta
-    if (page == targetPage) return
-
-    animateScrollToPage(page, animationSpec = animationSpec)
+    if (realPageCount > 1) {
+      val page = currentPage + delta
+      if (page != targetPage) {
+        animateScrollToPage(page, animationSpec = animationSpec)
+      }
+    }
   }
 
   companion object {
