@@ -135,9 +135,7 @@ class InfinitePagerState internal constructor(
     val page = currentPage + delta
     if (page == targetPage) return
 
-    if (page in 0..<pageCount) {
-      animateScrollToPage(page, animationSpec = animationSpec)
-    }
+    animateScrollToPage(page, animationSpec = animationSpec)
   }
 
   companion object {
