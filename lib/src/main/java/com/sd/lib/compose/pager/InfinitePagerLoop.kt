@@ -17,6 +17,7 @@ import kotlinx.coroutines.delay
 fun InfinitePagerState.LoopToNext(
   /** 间隔，默认3000毫秒 */
   getInterval: () -> Long = { 3000L },
+  /** 动画参数 */
   animationSpec: AnimationSpec<Float> = tween(500),
 ) {
   Loop(
@@ -31,6 +32,7 @@ fun InfinitePagerState.LoopToNext(
 fun InfinitePagerState.LoopToPrevious(
   /** 间隔，默认3000毫秒 */
   getInterval: () -> Long = { 3000L },
+  /** 动画参数 */
   animationSpec: AnimationSpec<Float> = tween(500),
 ) {
   Loop(

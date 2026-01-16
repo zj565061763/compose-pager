@@ -90,6 +90,7 @@ class InfinitePagerState internal constructor(
 
   /** 滚动到下一项（异步） */
   fun animateScrollToPageNextAsync(
+    /** 动画参数 */
     animationSpec: AnimationSpec<Float> = tween(500),
   ) {
     _coroutineScope?.launch {
@@ -99,6 +100,7 @@ class InfinitePagerState internal constructor(
 
   /** 滚动到上一项（异步） */
   fun animateScrollToPagePreviousAsync(
+    /** 动画参数 */
     animationSpec: AnimationSpec<Float> = tween(500),
   ) {
     _coroutineScope?.launch {
@@ -107,16 +109,27 @@ class InfinitePagerState internal constructor(
   }
 
   /** 滚动到下一项 */
-  suspend fun animateScrollToPageNext(animationSpec: AnimationSpec<Float> = tween(500)) {
+  suspend fun animateScrollToPageNext(
+    /** 动画参数 */
+    animationSpec: AnimationSpec<Float> = tween(500),
+  ) {
     animateScrollToPageDelta(delta = 1, animationSpec)
   }
 
   /** 滚动到上一项 */
-  suspend fun animateScrollToPagePrevious(animationSpec: AnimationSpec<Float> = tween(500)) {
+  suspend fun animateScrollToPagePrevious(
+    /** 动画参数 */
+    animationSpec: AnimationSpec<Float> = tween(500),
+  ) {
     animateScrollToPageDelta(delta = -1, animationSpec)
   }
 
-  private suspend fun animateScrollToPageDelta(delta: Int, animationSpec: AnimationSpec<Float>) {
+  private suspend fun animateScrollToPageDelta(
+    /** 偏移量 */
+    delta: Int,
+    /** 动画参数 */
+    animationSpec: AnimationSpec<Float>,
+  ) {
     if (realPageCount <= 1) return
 
     val page = currentPage + delta
